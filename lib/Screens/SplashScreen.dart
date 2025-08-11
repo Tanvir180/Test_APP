@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+          builder: (context) => const LaunchScreen(),
         ),
       );
     });
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A0C0C), // dark background like the image
+      backgroundColor: const Color(0xFF1A0C0C),
       body: const Center(
         child: Text(
           "Logo",
