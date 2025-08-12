@@ -11,6 +11,61 @@ class CreateCompanyAccountPage extends StatefulWidget {
 
 class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
   bool isPhoneSelected = true; // true = Phone, false = Email
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+
+  String? errorMessage;
+
+  bool isValidPhone(String phone) {
+    final RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
+    return phoneRegExp.hasMatch(phone);
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegExp.hasMatch(email);
+  }
+
+  void sendOTP() {
+    if (isPhoneSelected) {
+      String phone = phoneController.text.trim();
+      if (!isValidPhone(phone)) {
+        setState(() {
+          errorMessage = "Phone number is invalid";
+        });
+        return;
+      }
+    } else {
+      String email = emailController.text.trim();
+      if (!isValidEmail(email)) {
+        setState(() {
+          errorMessage = "Email address is invalid";
+        });
+        return;
+      }
+    }
+
+    // If valid
+    setState(() {
+      errorMessage = null;
+    });
+
+    String inputValue =
+        isPhoneSelected
+            ? phoneController.text.trim()
+            : emailController.text.trim();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => VerifyAccountPage(
+              isPhoneSelected: isPhoneSelected,
+              enteredValue: inputValue,
+            ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +78,20 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Back button
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context),
                 ),
                 const SizedBox(height: 20),
 
-                // Logo
                 Center(
-                  child: Text(
+                  child: const Text(
                     "Logo",
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 16),
 
-                // Title
                 Center(
                   child: Column(
                     children: [
@@ -64,11 +113,6 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                 ),
                 const SizedBox(height: 30),
 
-                // Toggle Buttons
-                // Inside your build method, replace the toggle buttons part:
-
-                // Toggle Buttons
-                // Toggle Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -76,6 +120,7 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                       onTap: () {
                         setState(() {
                           isPhoneSelected = true;
+                          errorMessage = null;
                         });
                       },
                       child: Container(
@@ -109,6 +154,7 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                       onTap: () {
                         setState(() {
                           isPhoneSelected = false;
+                          errorMessage = null;
                         });
                       },
                       child: Container(
@@ -143,7 +189,6 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
 
                 const SizedBox(height: 20),
 
-                // Input fields
                 if (isPhoneSelected) ...[
                   Align(
                     alignment: Alignment.centerLeft,
@@ -165,9 +210,8 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                           border: Border.all(color: Colors.grey.shade400),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Row(
-                          children: const [
-                            // Bangladesh flag emoji for example
+                        child: const Row(
+                          children: [
                             Text('🇧🇩', style: TextStyle(fontSize: 24)),
                             SizedBox(width: 6),
                             Text(
@@ -180,6 +224,7 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
+                          controller: phoneController,
                           decoration: InputDecoration(
                             hintText: 'Enter phone number',
                             border: OutlineInputBorder(
@@ -210,6 +255,7 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                   ),
                   const SizedBox(height: 6),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: 'Enter email',
                       border: OutlineInputBorder(
@@ -227,9 +273,31 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                   ),
                 ],
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
 
-                // Send OTP Button
+                if (errorMessage != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error_outline, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            errorMessage!,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -241,24 +309,7 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {
-                      String inputValue =
-                          isPhoneSelected
-                              ? "YourPhoneHere" // You can fetch from controller
-                              : "YourEmailHere"; // You can fetch from controller
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => VerifyAccountPage(
-                                isPhoneSelected: isPhoneSelected,
-                                enteredValue: inputValue,
-                              ),
-                        ),
-                      );
-                    },
-
+                    onPressed: sendOTP,
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -272,20 +323,15 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
 
                 const SizedBox(height: 16),
 
-                // Login link
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context); // Go back to login
+                      Navigator.pop(context);
                     },
                     child: RichText(
                       text: const TextSpan(
                         text: 'Have an account? ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color:
-                              Colors.black, // make sure to set color explicitly
-                        ),
+                        style: TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Login',
@@ -301,8 +347,6 @@ class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
                 ),
 
                 const SizedBox(height: 80),
-
-                // Beta version text
                 Center(
                   child: Text(
                     "Beta Version 1.0",
