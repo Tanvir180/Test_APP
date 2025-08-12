@@ -27,8 +27,6 @@ class _ProfileCreatingPageState extends State<ProfileCreatingPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Full background
-          // Main content
           SafeArea(
             child: Center(
               child: Column(
@@ -39,12 +37,12 @@ class _ProfileCreatingPageState extends State<ProfileCreatingPage> {
                     alignment: Alignment.center,
                     children: [
                       Image.asset(
-                        'images/Background_Simple.png', // This is your gray shape PNG
+                        'images/Background_Simple.png', 
                         width: 220,
                         height: 150,
                       ),
                       Image.asset(
-                        'images/Profile.png', // Phone/profile PNG
+                        'images/Profile.png', 
                         width: 200,
                         height: 200,
                       ),

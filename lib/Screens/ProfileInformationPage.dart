@@ -141,52 +141,119 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Terms and Conditions",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "By continuing I agree with the terms and conditions",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+          child: SizedBox(
+            height: 250,
+            width: 350,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context); // Close modal
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.red,
+                        size: 28,
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfileCreatingPage(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Agree and Continue",
-                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  const Center(
+                    child: Text(
+                      "Terms and Conditions",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Center(
+                    child: const Text(
+                      "By continuing I agree with the terms and condition",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileCreatingPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Agree and Continue",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  void _validateAndProceed() {
+    String fullName = _fullNameController.text.trim();
+    String dob = _dobController.text.trim();
+    String password = _passwordController.text.trim();
+    String confirmPassword = _confirmPasswordController.text.trim();
+    String bloodGroup = _bloodGroupController.text.trim();
+
+    RegExp specialCharRegex = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
+    if (fullName.isEmpty ||
+        dob.isEmpty ||
+        selectedGender == null ||
+        bloodGroup.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      _showError("All fields are required");
+      return;
+    }
+
+    if (password != confirmPassword) {
+      _showError("Password and confirm password do not match");
+      return;
+    }
+
+    if (password.length < 8 || !specialCharRegex.hasMatch(password)) {
+      _showError(
+        "Password must be at least 8 characters long and contain a special character",
+      );
+      return;
+    }
+
+    // If everything is valid, show terms and conditions
+    _showTermsAndConditionsModal();
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
@@ -219,7 +286,6 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back Button
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Row(
@@ -231,8 +297,6 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                 ),
               ),
               const SizedBox(height: 25),
-
-              // Title
               const Center(
                 child: Text(
                   "Profile Information",
@@ -241,16 +305,12 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
               ),
               const SizedBox(height: 4),
               const Divider(thickness: 1),
-
               const SizedBox(height: 25),
-              // Full Name
               TextField(
                 controller: _fullNameController,
                 decoration: _inputDecoration("Full Name*"),
               ),
-
               const SizedBox(height: 25),
-              // Date of Birth
               TextField(
                 controller: _dobController,
                 readOnly: true,
@@ -259,9 +319,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                 ).copyWith(suffixIcon: const Icon(Icons.calendar_today)),
                 onTap: () => _selectDate(context),
               ),
-
               const SizedBox(height: 25),
-              // Gender
               const Text(
                 "What Is Your Gender?*",
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -291,9 +349,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                   const Text("Others"),
                 ],
               ),
-
               const SizedBox(height: 25),
-              // Blood Group
               GestureDetector(
                 onTap: _showBloodGroupModal,
                 child: AbsorbPointer(
@@ -307,9 +363,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 25),
-              // Password
               TextField(
                 controller: _passwordController,
                 obscureText: !passwordVisible,
@@ -324,9 +378,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 25),
-              // Confirm Password
               TextField(
                 controller: _confirmPasswordController,
                 obscureText: !confirmPasswordVisible,
@@ -345,9 +397,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 30),
-              // Next Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -358,7 +408,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: _showTermsAndConditionsModal,
+                  onPressed: _validateAndProceed,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -372,7 +422,6 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 80),
               const Center(
                 child: Text(
