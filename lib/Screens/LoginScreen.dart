@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/Screens/CreateCompanyAccountPage.dart';
+import 'package:test_app/Screens/DashboardPage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -270,7 +271,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // login action
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const NextPage()),
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -82,7 +82,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                       groupValue: tempSelection,
                       title: Text(bg),
                       secondary: Image.asset(
-                        'icons/Blood.png', // Make sure this path is correct in pubspec.yaml
+                        'icons/Blood.png',
                         width: 30,
                         height: 30,
                       ),
@@ -122,6 +122,68 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                 ),
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showTermsAndConditionsModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 24,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Terms and Conditions",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  "By continuing I agree with the terms and conditions",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileCreatingPage(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Agree and Continue",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -296,14 +358,7 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileCreatingPage(),
-                      ),
-                    );
-                  },
+                  onPressed: _showTermsAndConditionsModal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

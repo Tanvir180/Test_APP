@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:test_app/Screens/DashboardPage.dart';
+
 class ProfileCreatingPage extends StatefulWidget {
   const ProfileCreatingPage({super.key});
 
@@ -12,7 +14,6 @@ class _ProfileCreatingPageState extends State<ProfileCreatingPage> {
   @override
   void initState() {
     super.initState();
-    // Wait for 5 seconds then navigate
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
@@ -90,14 +91,3 @@ class _ProfileCreatingPageState extends State<ProfileCreatingPage> {
   }
 }
 
-// Example next page
-class NextPage extends StatelessWidget {
-  const NextPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Dashboard", style: TextStyle(fontSize: 24))),
-    );
-  }
-}
