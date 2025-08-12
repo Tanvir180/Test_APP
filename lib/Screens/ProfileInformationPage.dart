@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:test_app/Screens/ProfileCreatingPage.dart';
 
 class ProfileInformationPage extends StatefulWidget {
   const ProfileInformationPage({super.key});
@@ -79,9 +81,10 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                       value: bg,
                       groupValue: tempSelection,
                       title: Text(bg),
-                      secondary: const Icon(
-                        Icons.bloodtype,
-                        color: Colors.redAccent,
+                      secondary: Image.asset(
+                        'icons/Blood.png', // Make sure this path is correct in pubspec.yaml
+                        width: 30,
+                        height: 30,
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -293,7 +296,14 @@ class _ProfileInformationPageState extends State<ProfileInformationPage> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileCreatingPage(),
+                      ),
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
