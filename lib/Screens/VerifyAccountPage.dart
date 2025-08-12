@@ -68,7 +68,6 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              // Back button
               Align(
                 alignment: Alignment.centerLeft,
                 child: IconButton(
@@ -78,7 +77,6 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
               ),
               const SizedBox(height: 20),
 
-              // Logo placeholder
               const Text(
                 "Logo",
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
@@ -129,7 +127,6 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
               ),
               const SizedBox(height: 16),
 
-              // Timer + Resend OTP
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

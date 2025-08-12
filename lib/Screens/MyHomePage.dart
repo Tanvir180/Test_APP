@@ -11,14 +11,12 @@ class LaunchScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Image.asset('Assets/images/Launch screen.jpg', fit: BoxFit.cover),
 
-          // Overlay content
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(height: 50), // Top spacing
+              const SizedBox(height: 50), 
               // Logo text
               const Text(
                 "Logo",
@@ -29,7 +27,6 @@ class LaunchScreen extends StatelessWidget {
                 ),
               ),
 
-              // Bottom section
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -53,7 +50,6 @@ class LaunchScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    // Login button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -81,7 +77,6 @@ class LaunchScreen extends StatelessWidget {
 
                     const SizedBox(height: 8),
 
-                    // Create Account button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(

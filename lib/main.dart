@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:test_app/Screens/SplashScreen.dart';
 
 void main() {

@@ -10,7 +10,7 @@ class CreateCompanyAccountPage extends StatefulWidget {
 }
 
 class _CreateCompanyAccountPageState extends State<CreateCompanyAccountPage> {
-  bool isPhoneSelected = true; // true = Phone, false = Email
+  bool isPhoneSelected = true; 
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
 
